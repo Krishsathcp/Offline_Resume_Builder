@@ -80,8 +80,9 @@ python -m venv venv
 venv\Scripts\activate
 pip install -r offline_resume_builder/requirements.txt
 ```
-```bash
+
 ▶️ Step 2: Start the App (Recommended for Windows)
+```bash
 
 Double-click run_app.bat
 What it does:
@@ -92,8 +93,9 @@ Starts the Flask server
 
 Opens the app at http://localhost:5000
 ```
-```bash
+
 💡 Step 3: Enable AI Features (Optional but Powerful)
+```bash
 Install Ollama
 
 Pull a model (Mistral is preferred):
@@ -107,8 +109,9 @@ Resume scoring
 
 Interview question generation
 ```
-```bash
+
 🧪 Developer Notes
+```bash
 You can modify resume templates under:
 offline_resume_builder/templates/
 
