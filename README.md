@@ -124,9 +124,8 @@ offline_resume_builder/utils/ai_engine.py
 👨‍💻 Author
 Krishsath CP
 
-🔗 LinkedIn
-
-💻 GitHub
-
-📧 Email: cpkrishsath@gmail.com
+📬 Contact Me
+- 🔗 [LinkedIn](https://www.linkedin.com/in/krishsath-cp-59754532a/)
+- 💻 [GitHub](https://github.com/Krishsathcp)
+- 📧 Email: cpkrishsath@gmail.com
 
