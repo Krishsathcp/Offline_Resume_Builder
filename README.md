@@ -29,34 +29,35 @@ A powerful **offline resume generation system** built with Python and Flask. Use
 
 ---
 
-📁 Project Folder Structure
+### 📁 Project Structure
 
-offline-resume-builder/
-│
-├── run_app.bat # Batch script to start app (Windows only)
-├── setup.py # For packaging the app
-├── pyproject.toml # Python project metadata
-├── README.md # You’re reading this :)
-│
-├── offline_resume_builder/
-│ ├── app.py # Main Flask application
-│ ├── requirements.txt # Required Python packages
-│ ├── templates/ # HTML Templates (Jinja2)
-│ ├── static/ # CSS and JS files
-│ ├── utils/ # AI engine, PDF builder, resume tools
-│ ├── resumes/ # Exported resumes (PDF/DOCX)
-│ ├── temp/ # Temporary files for preview/download
-│ ├── history/ # Stores resume creation logs
-│ └── init.py
-│
-├── resumes/ # Global output resume folder
-├── temp/ # Global temp HTML cache
-├── history/ # Resume generation logs
-└── resume_builder.egg-info/ # Python packaging metadata
+- `offline_resume_builder/` – Core Flask backend application  
+  - `app.py` – Main Flask application entry point  
+  - `requirements.txt` – Lists all required Python packages  
+  - `templates/` – Jinja2 HTML templates for rendering resume UI  
+  - `static/` – CSS and JavaScript files  
+  - `utils/` – Utility modules: AI engine, PDF generator, formatting tools  
+  - `resumes/` – Stores exported resumes (PDF, DOCX)  
+  - `temp/` – Temporary storage for HTML previews and draft resumes  
+  - `history/` – Tracks generated resumes with timestamped logs  
+  - `__init__.py` – Package initializer for Flask module
 
-yaml
-Copy
-Edit
+- `resumes/` – Global folder for storing final generated resumes
+
+- `temp/` – Global folder for temporary HTML/JSON data
+
+- `history/` – Global folder to log generation activities and session info
+
+- `resume_builder.egg-info/` – Metadata files for Python packaging (auto-generated)
+
+- `run_app.bat` – Batch file to start the Flask app (for Windows)
+
+- `setup.py` – Python setup script for packaging and installation
+
+- `pyproject.toml` – Python project metadata (PEP 518)
+
+- `README.md` – Project documentation and usage instructions
+
 
 ---
 
