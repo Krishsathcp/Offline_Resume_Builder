@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>{{ name }} - Resume</title>
+  <style>body{font-family:Arial;margin:40px}h1,h2{color:#333}.section{margin-bottom:20px}.no-print{display:none}</style>
+</head>
+<body>
+  <h1>{{ name }}</h1>
+  <p>{{ email }} | {{ phone }} | {{ address }}</p>
+  <div class="section"><h2>Summary</h2><p>{{ summary }}</p></div>
+  <div class="section"><h2>Experience</h2><ul>{% for e in experience %}<li>{{ e.strip() }}</li>{% endfor %}</ul></div>
+  <div class="section"><h2>Education</h2><ul>{% for e in education %}<li>{{ e.strip() }}</li>{% endfor %}</ul></div>
+  <div class="section"><h2>Skills</h2><ul>{% for s in skills %}<li>{{ s.strip() }}</li>{% endfor %}</ul></div>
+</body>
+</html>

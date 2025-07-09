@@ -1,0 +1,275 @@
+{% extends "layout.html" %}
+{% block title %}Resume Builder{% endblock %}
+{% block content %}
+
+<h2>📄 Enter Your Resume Details</h2>
+
+<form id="resume-form" method="POST" action="/generate_resume">
+  <label>Name:</label>
+  <input type="text" name="name" value="{{ resume.name if resume else '' }}" required />
+
+  <label>Email:</label>
+  <input type="email" name="email" value="{{ resume.email if resume else '' }}" required />
+
+  <label>Phone:</label>
+  <input type="text" name="phone" value="{{ resume.phone if resume else '' }}" required />
+
+  <label>Address:</label>
+  <input type="text" name="address" value="{{ resume.address if resume else '' }}" />
+
+  <label>About Yourself:</label>
+  <textarea name="summary" id="summary">{{ resume.summary if resume else '' }}</textarea>
+
+  <label>Skills:</label>
+  <textarea name="skills" id="skills">{{ resume.skills if resume else '' }}</textarea>
+
+  <label>Experience:</label>
+  <textarea name="experience" id="experience">{{ resume.experience if resume else '' }}</textarea>
+
+  <label>Education:</label>
+  <textarea name="education" id="education">{{ resume.education if resume else '' }}</textarea>
+
+  <label>Projects:</label>
+  <textarea name="projects" id="projects">{{ resume.projects if resume else '' }}</textarea>
+
+  <h3>🧩 Add Extra Sections</h3>
+  <div id="extra-sections"></div>
+  <button type="button" onclick="addExtraSection()">➕ Add Section</button>
+  <input type="hidden" name="extra_sections" id="extra_sections_data" />
+  <br />
+  <hr />
+  <br />
+  <label>Job Description (optional but necessary for Summarize with AI):</label>
+  <textarea name="job_description" id="job_description">{{ resume.job_description if resume else '' }}</textarea>
+
+  <br />
+  <button type="button" onclick="summarizeWithAI()">🤖 Summarize with AI</button>
+  <span id="ai-status" style="margin-left: 10px; font-style: italic"></span>
+
+  <div id="ai-result" style="display: none; margin-top: 30px">
+    <h3>🧠 Compare AI-Enhanced Resume</h3>
+    <div style="display: flex; gap: 20px">
+      <div style="flex: 1">
+        <h4>📝 Original</h4>
+        <div id="original-preview" style="background: #f9f9f9; padding: 10px; border-radius: 5px"></div>
+      </div>
+      <div style="flex: 1">
+        <h4>🤖 AI Enhanced</h4>
+        <div id="ai-preview" style="background: #e6f7ff; padding: 10px; border-radius: 5px"></div>
+      </div>
+    </div>
+    <br />
+    <div id="ai-changes-box" style="display: none; margin-top: 20px">
+      <h4>📋 Changes Made by AI</h4>
+      <div id="ai-changes-output" style="background: var(--box-bg); color: var(--box-text); padding: 10px; border-radius: 8px;"></div>
+    </div>
+    <button type="button" onclick="useAIVersion()">✅ Use AI Version</button>
+  </div>
+
+  <label>Resume Style:</label>
+  <select name="style">
+    <option value="formal" {% if resume and resume.template == 'formal' %}selected{% endif %}>Formal</option>
+    <option value="casual" {% if resume and resume.template == 'casual' %}selected{% endif %}>Casual</option>
+  </select>
+
+  <label>Export Format:</label>
+  <select name="export_format">
+    <option value="pdf">PDF</option>
+    <option value="docx">DOCX</option>
+  </select>
+  <br /><br />
+  <button type="submit">🚀 Generate Resume</button>
+</form>
+
+
+<script>
+let extraSections = [];
+
+function addExtraSection() {
+  const container = document.getElementById("extra-sections");
+  const index = extraSections.length;
+  const html = `
+    <div style="margin-bottom:10px;">
+      <label>Heading:</label>
+      <input type="text" class="extra-heading" data-index="${index}" oninput="updateExtraSections()" />
+      <label>Content:</label>
+      <textarea class="extra-content" data-index="${index}" oninput="updateExtraSections()"></textarea>
+    </div>
+  `;
+  container.insertAdjacentHTML("beforeend", html);
+  extraSections.push({ heading: "", content: "" });
+  updateExtraSections();
+}
+
+function updateExtraSections() {
+  const headings = document.querySelectorAll(".extra-heading");
+  const contents = document.querySelectorAll(".extra-content");
+  extraSections = [];
+
+  for (let i = 0; i < headings.length; i++) {
+    const heading = headings[i].value.trim();
+    const content = contents[i].value.trim();
+    if (heading) {
+      extraSections.push({ heading, content });
+    }
+  }
+
+  document.getElementById("extra_sections_data").value = JSON.stringify(extraSections);
+}
+
+{% if resume and resume.extra_sections %}
+extraSections = {{ resume.extra_sections | tojson }};
+window.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("extra-sections");
+  extraSections.forEach((section, index) => {
+    const html = `
+      <div style="margin-bottom:10px;">
+        <label>Heading:</label>
+        <input type="text" class="extra-heading" data-index="${index}" value="${section.heading}" oninput="updateExtraSections()" />
+        <label>Content:</label>
+        <textarea class="extra-content" data-index="${index}" oninput="updateExtraSections()">${section.content}</textarea>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", html);
+  });
+  updateExtraSections();
+});
+{% endif %}
+
+async function summarizeWithAI() {
+  updateExtraSections(); 
+
+  const summary = document.getElementById("summary").value.trim();
+  const skills = document.getElementById("skills").value.trim();
+  const experience = document.getElementById("experience").value.trim();
+  const education = document.getElementById("education").value.trim();
+  const projects = document.getElementById("projects").value.trim();
+  const job_description = document.getElementById("job_description").value.trim();
+
+  const status = document.getElementById("ai-status");
+  const resultBox = document.getElementById("ai-result");
+  const changesBox = document.getElementById("ai-changes-box");
+  const changesOutput = document.getElementById("ai-changes-output");
+
+  status.textContent = "🔄 Generating AI-enhanced version...";
+  resultBox.style.display = "none";
+  changesBox.style.display = "none";
+
+  try {
+    const res = await fetch("/summarize_ai_full", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        summary,
+        skills,
+        experience,
+        education,
+        projects,
+        job_description,
+        extra_sections: extraSections
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      status.textContent = "❌ " + data.error;
+      return;
+    }
+
+    status.textContent = "✅ Comparison ready";
+    resultBox.style.display = "block";
+    const original = `
+      <strong>Summary:</strong><br>${summary}<br><br>
+      <strong>Skills:</strong><br>${skills}<br><br>
+      <strong>Experience:</strong><br>${experience}<br><br>
+      <strong>Education:</strong><br>${education}<br><br>
+      <strong>Projects:</strong><br>${projects}<br><br>
+      ${extraSections.length > 0 ? `<strong>Extra Sections:</strong><br>` + extraSections.map(s => `<strong>${s.heading}:</strong> ${s.content}`).join("<br><br>") : ""}
+    `;
+
+    let aiVersion = `
+      <strong>Summary:</strong><br>${data.ai_summary}<br><br>
+      <strong>Skills:</strong><br>${data.skills}<br><br>
+      <strong>Experience:</strong><br>${data.experience}<br><br>
+      <strong>Education:</strong><br>${data.education}<br><br>
+      <strong>Projects:</strong><br>${data.projects}<br><br>
+    `;
+
+    if (data.extra_sections && data.extra_sections.length > 0) {
+      aiVersion += `<hr><strong>Extra Sections:</strong><br>`;
+      data.extra_sections.forEach((s) => {
+        aiVersion += `<strong>${s.heading}:</strong><br>${s.content.replace(/\n/g, "<br>")}<br><br>`;
+      });
+    }
+
+    document.getElementById("original-preview").innerHTML = original;
+    document.getElementById("ai-preview").innerHTML = aiVersion;
+
+    if (data.changes && data.changes.trim()) {
+      changesOutput.innerHTML = data.changes.replace(/\n/g, "<br>");
+      changesBox.style.display = "block";
+    }
+
+    window._aiData = data;
+  } catch (err) {
+    status.textContent = "❌ Failed: " + err.message;
+  }
+}
+
+function useAIVersion() {
+  const ai = window._aiData;
+  if (!ai) return;
+
+  const btn = document.querySelector("button[onclick='useAIVersion()']");
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "⏳ Applying...";
+  }
+
+  requestAnimationFrame(() => {
+    document.getElementById("summary").value = ai.ai_summary || "";
+    document.getElementById("skills").value = ai.skills || "";
+    document.getElementById("experience").value = ai.experience || "";
+    document.getElementById("education").value = ai.education || "";
+    document.getElementById("projects").value = ai.projects || "";
+
+    const userHeadings = document.querySelectorAll(".extra-heading");
+    const userContents = document.querySelectorAll(".extra-content");
+
+    const headingMap = {};
+    for (let i = 0; i < userHeadings.length; i++) {
+      const key = userHeadings[i].value.trim().toLowerCase();
+      if (key) {
+        headingMap[key] = {
+          headingEl: userHeadings[i],
+          contentEl: userContents[i]
+        };
+      }
+    }
+    if (ai.extra_sections && Array.isArray(ai.extra_sections)) {
+      ai.extra_sections.forEach((s) => {
+        const key = s.heading.trim().toLowerCase();
+        if (headingMap[key]) {
+          headingMap[key].headingEl.value = s.heading;
+          headingMap[key].contentEl.value = s.content;
+        }
+      });
+      updateExtraSections();
+    }
+
+    document.getElementById("ai-result").style.display = "none";
+    document.getElementById("ai-changes-box").style.display = "none";
+    document.getElementById("ai-status").textContent = "✅ AI version applied to form!";
+
+    if (btn) {
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = "✅ Use AI Version";
+      }, 400);
+    }
+  });
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "layout.html" %} {% block title %}AI Resume Scoring{% endblock %} {%
+block content %}
+
+<h2>📊 AI Resume Scoring</h2>
+
+<form method="post" id="scoreForm">
+  <label for="resume_text">Paste your resume text below:</label><br />
+  <textarea name="resume_text" rows="16" cols="90" required>
+{{ request.form.resume_text }}</textarea
+  ><br /><br />
+  <button type="submit" id="scoreBtn">🔍 Get Score & Feedback</button>
+</form>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("scoreForm");
+    const btn = document.getElementById("scoreBtn");
+
+    form.addEventListener("submit", () => {
+      btn.disabled = true;
+      btn.textContent = "⏳ Scoring with AI...";
+    });
+  });
+</script>
+
+{% if score %}
+<hr />
+<h3>Score: {{ score }}/100</h3>
+<h4>Feedback:</h4>
+<pre>{{ feedback }}</pre>
+{% elif feedback %}
+<hr />
+<h4>Feedback:</h4>
+<pre>{{ feedback }}</pre>
+{% endif %}
+
+<br />
+<a href="{{ url_for('home') }}">🏠 Back to Home</a>
+
+{% endblock %}

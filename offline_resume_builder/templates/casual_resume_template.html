@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ name }} - Resume</title>
+    <style>
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        margin: 40px;
+        background-color: #fefefe;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      h1 {
+        color: #2c3e50;
+        font-size: 36px;
+        margin-bottom: 5px;
+        border-bottom: 2px dashed #ccc;
+        padding-bottom: 5px;
+      }
+
+      h2 {
+        color: #3498db;
+        font-size: 22px;
+        margin-top: 30px;
+        border-left: 5px solid #3498db;
+        padding-left: 10px;
+      }
+
+      p {
+        margin: 5px 0 15px;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      .contact {
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #555;
+      }
+
+      .extra-section {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f3f9ff;
+        border-left: 4px solid #3498db;
+        border-radius: 4px;
+      }
+
+      .extra-section h2 {
+        margin-top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{ name }}</h1>
+    <p class="contact">
+      Email: {{ email }} | Phone: {{ phone }} | Address: {{ address }}
+    </p>
+
+    {% if ai_summary %}
+    <h2>Summary</h2>
+    <p>{{ ai_summary }}</p>
+    {% elif summary %}
+    <h2>Summary</h2>
+    <p>{{ summary }}</p>
+    {% endif %} {% if education_html %}
+    <h2>Education</h2>
+    {{ education_html | safe }} {% endif %} {% if experience_html %}
+    <h2>Experience</h2>
+    {{ experience_html | safe }} {% endif %} {% if projects_html %}
+    <h2>Projects</h2>
+    {{ projects_html | safe }} {% endif %} {% if skills_html %}
+    <h2>Skills</h2>
+    {{ skills_html | safe }} {% endif %} {% if extra_sections %} {% for sec in
+    extra_sections %} {% if sec.heading and sec.content %}
+    <div class="extra-section">
+      <h2>{{ sec.heading }}</h2>
+      <p>{{ sec.content }}</p>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% if user_suggestions %}
+    <h2>User Notes</h2>
+    <p>{{ user_suggestions }}</p>
+    {% endif %} {% if ai_suggestions %}
+    <h2>Tips from AI</h2>
+    <p>{{ ai_suggestions }}</p>
+    {% endif %}
+  </body>
+</html>

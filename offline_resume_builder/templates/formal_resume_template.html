@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ name }} - Resume</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        margin: 40px;
+        color: #222;
+      }
+      h1,
+      h2,
+      h3 {
+        color: #003366;
+      }
+      .section {
+        margin-bottom: 20px;
+      }
+      .section-title {
+        border-bottom: 2px solid #003366;
+        margin-bottom: 10px;
+        padding-bottom: 3px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{ name }}</h1>
+    <p>
+      <strong>Email:</strong> {{ email }}<br />
+      <strong>Phone:</strong> {{ phone }}<br />
+      <strong>Address:</strong> {{ address }}
+    </p>
+
+    <div class="section">
+      <div class="section-title">Summary</div>
+      <p>{{ ai_summary | safe }}</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Skills</div>
+      <p>{{ skills_html | safe }}</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Experience</div>
+      <p>{{ experience_html | safe }}</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Education</div>
+      <p>{{ education_html | safe }}</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Projects</div>
+      <p>{{ projects_html | safe }}</p>
+    </div>
+
+    {% if extra_sections %}
+    <div class="section">
+      <div class="section-title">Extra Sections</div>
+      {% for section in extra_sections %}
+      <h3>{{ section.heading }}</h3>
+      <p>{{ section.content | safe }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </body>
+</html>

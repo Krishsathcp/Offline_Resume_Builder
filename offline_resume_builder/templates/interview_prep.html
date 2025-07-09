@@ -1,0 +1,129 @@
+{% extends "layout.html" %} {% block title %}Interview Prep{% endblock %} {%
+block content %}
+
+<h2>🎤 Interview Prep</h2>
+
+<form id="topicForm">
+  <label for="topic">Enter a topic for MCQs:</label>
+  <input type="text" id="topic" name="topic" required />
+  <button type="submit" id="startBtn">Start Round</button>
+</form>
+
+<div id="questions-container" class="mt-4"></div>
+
+<div id="score" class="score-block" style="margin-top: 20px"></div>
+
+<div style="margin-top: 20px">
+  <button id="nextRoundBtn" style="display: none">Next Round</button>
+  <a
+    href="{{ url_for('home') }}"
+    class="btn btn-secondary"
+    style="margin-left: 10px"
+    >🏠 Back to Home</a
+  >
+</div>
+
+<script>
+  const form = document.getElementById("topicForm");
+  const container = document.getElementById("questions-container");
+  const scoreDiv = document.getElementById("score");
+  const nextRoundBtn = document.getElementById("nextRoundBtn");
+  const startBtn = document.getElementById("startBtn");
+
+  let currentQuestions = [];
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const topic = document.getElementById("topic").value.trim();
+    if (!topic) return;
+
+    startBtn.disabled = true;
+    startBtn.textContent = "⏳ Generating Questions...";
+
+    container.innerHTML = "";
+    scoreDiv.innerHTML = "";
+    nextRoundBtn.style.display = "none";
+
+    try {
+      const res = await fetch("/get_mcqs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ topic }),
+      });
+
+      const data = await res.json();
+      if (data.questions) {
+        currentQuestions = data.questions;
+        renderQuestions(currentQuestions);
+        nextRoundBtn.style.display = "inline-block";
+      } else {
+        alert("⚠️ Failed to get questions.");
+      }
+    } catch (err) {
+      alert("❌ Error while generating questions.");
+      console.error(err);
+    }
+
+    startBtn.disabled = false;
+    startBtn.textContent = "Start Round";
+  });
+
+  function renderQuestions(questions) {
+    container.innerHTML = "";
+    questions.forEach((q, i) => {
+      const block = document.createElement("div");
+      block.className = "question-block";
+      block.innerHTML = `
+        <p><strong>Q${i + 1}: ${q.question}</strong></p>
+        ${q.options
+          .map(
+            (opt, j) => `
+            <div>
+              <input type="radio" name="q${i}" value="${String.fromCharCode(
+              65 + j
+            )}" id="q${i}_${j}">
+              <label for="q${i}_${j}">${String.fromCharCode(
+              65 + j
+            )}. ${opt}</label>
+            </div>
+          `
+          )
+          .join("")}
+      `;
+      container.appendChild(block);
+    });
+  }
+
+  nextRoundBtn.addEventListener("click", () => {
+    const total = currentQuestions.length;
+    let correct = 0,
+      wrong = 0,
+      unanswered = 0;
+
+    currentQuestions.forEach((q, i) => {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      const correctAns = q.answer.trim().toUpperCase();
+      if (!selected) {
+        unanswered++;
+      } else if (selected.value === correctAns) {
+        correct++;
+      } else {
+        wrong++;
+      }
+    });
+
+    const percentage = ((correct / total) * 100).toFixed(2);
+    scoreDiv.innerHTML = `
+      <p><strong>Total Questions:</strong> ${total}</p>
+      <p><strong>Correct:</strong> ${correct}</p>
+      <p><strong>Wrong:</strong> ${wrong}</p>
+      <p><strong>Unanswered:</strong> ${unanswered}</p>
+      <p><strong>Score:</strong> ${percentage}%</p>
+    `;
+
+    container.innerHTML = "";
+    nextRoundBtn.style.display = "none";
+  });
+</script>
+
+{% endblock %}

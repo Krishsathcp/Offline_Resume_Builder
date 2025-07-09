@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}{{ name }} - Resume{% endblock %}
+{% block content %}
+<div style="background:#e1f5fe;padding:20px;border-radius:8px">
+  <h1>{{ name }}</h1>
+  <p>{{ email }} | {{ phone }}</p>
+  <p>{{ address }}</p>
+</div>
+<h2>Summary</h2><p>{{ summary }}</p>
+<h2>Experience</h2><ul>{% for e in experience %}<li>{{ e.strip() }}</li>{% endfor %}</ul>
+<h2>Education</h2><ul>{% for e in education %}<li>{{ e.strip() }}</li>{% endfor %}</ul>
+<h2>Skills</h2><ul>{% for s in skills %}<li>{{ s.strip() }}</li>{% endfor %}</ul>
+{% endblock %}

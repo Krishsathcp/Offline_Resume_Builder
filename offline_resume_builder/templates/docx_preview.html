@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ data.name }} – Word Resume Preview</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        line-height: 1.6;
+      }
+      h1,
+      h2 {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{ data.name }}</h1>
+    <p>
+      <strong>Email:</strong> {{ data.email }} | <strong>Phone:</strong> {{
+      data.phone }} | <strong>Address:</strong> {{ data.address }}
+    </p>
+
+    {% if data.summary %}
+    <h2>Summary</h2>
+    <p>{{ data.summary }}</p>
+    {% endif %} {% if data.education %}
+    <h2>Education</h2>
+    <p>{{ data.education.replace('\n', '<br />')|safe }}</p>
+    {% endif %} {% if data.experience %}
+    <h2>Experience</h2>
+    <p>{{ data.experience.replace('\n', '<br />')|safe }}</p>
+    {% endif %} {% if data.projects %}
+    <h2>Projects</h2>
+    <p>{{ data.projects.replace('\n', '<br />')|safe }}</p>
+    {% endif %} {% if data.skills %}
+    <h2>Skills</h2>
+    <p>{{ data.skills.replace('\n', '<br />')|safe }}</p>
+    {% endif %} {% if data.ai_suggestions %}
+    <h2>AI Suggestions</h2>
+    <p>{{ data.ai_suggestions.replace('\n', '<br />')|safe }}</p>
+    {% endif %}
+  </body>
+</html>

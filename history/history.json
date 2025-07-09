@@ -1,0 +1,22 @@
+[
+  {
+    "id": "03615d7981ce4784bd876acdc0d2da59",
+    "name": "e",
+    "email": "e@gmail.com",
+    "phone": "e",
+    "address": "e",
+    "summary": "Highly skilled and experienced Software Engineer with a strong focus on delivering high-quality software solutions. Proven ability to work in fast-paced, collaborative environments and to adapt quickly to new technologies.",
+    "job_description": "software engineer",
+    "template": "formal",
+    "skills": "- Programming Languages: Python, Java, C++, JavaScript\r\n   - Web Development: HTML5, CSS3, React, Angular\r\n   - Databases: SQL, MongoDB\r\n   - Cloud Platforms: AWS, Google Cloud, Azure\r\n   - Version Control Systems: Git, SVN\r\n   - Agile/Scrum methodologies\r\n   - Problem-solving and debugging skills",
+    "experience": "Software Engineer | XYZ Company | City, State | MM/YY - Present\r\n   - Developed a new feature for the company's flagship product using React and Node.js, which increased user engagement by 20%.\r\n   - Collaborated with the DevOps team to improve CI/CD pipelines, reducing deployment times by 50%.\r\n   - Contributed to the redesign of the company's web application, resulting in a more intuitive and user-friendly interface.\r\n   - Worked on the maintenance and optimization of existing codebase using best practices for performance and scalability.",
+    "education": "Bachelor of Science in Computer Science | ABC University | City, State | YY/MM - ZZ/WW",
+    "projects": "- Project1: Brief description of a project you worked on, its impact or outcome.\r\n   - Project2: Brief description of another project you worked on, its impact or outcome.",
+    "ai_suggestions": "",
+    "user_suggestions": "",
+    "extra_sections": [],
+    "date": "2025-07-09 22:53:37",
+    "format": "pdf",
+    "file_path": "resumes/03615d7981ce4784bd876acdc0d2da59.pdf"
+  }
+]

@@ -1,0 +1,153 @@
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --accent-color: #007bff;
+  --box-bg: #f0f4f8;
+  --box-text: #000000;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f5f5f5;
+  --accent-color: #90caf9;
+  --box-bg: #1e1e1e;
+  --box-text: #f0f0f0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.container {
+  max-width: 900px;
+  margin: 50px auto;
+  background: var(--bg-color);
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+textarea,
+input,
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  resize: vertical;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-color);
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+a {
+  color: var(--accent-color);
+}
+
+.back-btn {
+  margin-top: 20px;
+  display: inline-block;
+  text-decoration: none;
+  padding: 10px 16px;
+  background-color: #ccc;
+  color: black;
+  border-radius: 6px;
+}
+
+.back-btn:hover {
+  background-color: #aaa;
+}
+
+.suggestion-box {
+  background-color: var(--box-bg);
+  color: var(--box-text);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 20px;
+  white-space: pre-wrap;
+  font-family: Consolas, monospace;
+  border-left: 5px solid var(--accent-color);
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--accent-color);
+  padding: 10px 20px;
+  color: white;
+}
+
+.nav-logo {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: white;
+  text-decoration: none;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+/* Fix AI Comparison Split View in Dark Mode */
+body.dark-mode #ai-result strong,
+body.dark-mode #ai-result label {
+  color: #f0f0f0;
+}
+
+body.dark-mode #ai-result h3,
+body.dark-mode #ai-result h4 {
+  color: #f0f0f0;
+}
+
+body.dark-mode #original-preview,
+body.dark-mode #ai-preview {
+  background-color: #2a2a2a;
+  color: #ffffff;
+}

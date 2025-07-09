@@ -1,0 +1,28 @@
+{% extends "layout.html" %} {% block title %}Improve Resume{% endblock %} {%
+block content %}
+<h1>🎯 Improve Your Resume with AI</h1>
+
+<form method="POST">
+  <label for="resume_text">Paste Your Resume Text:</label>
+  <textarea name="resume_text" required>{{ resume_text or '' }}</textarea>
+
+  <label for="job_description">Paste Job Description (optional):</label>
+  <textarea name="job_description">{{ job_description or '' }}</textarea>
+
+  <button type="submit">🔍 Analyze & Improve Resume</button>
+</form>
+
+{% if suggestions %}
+<h3>💡 Suggestions:</h3>
+<div class="suggestion-box">{{ suggestions | safe }}</div>
+<form method="POST" action="/download_improved_resume">
+  <input
+    type="hidden"
+    name="improved_text"
+    value="{{ suggestions | tojson }}"
+  />
+</form>
+{% endif %}
+
+<a href="/" class="back-btn">← Back to Home</a>
+{% endblock %}

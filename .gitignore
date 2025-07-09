@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.pyo
+*.pyd
+*.pdb
+*.log
+
+# Virtual environment
+venv/
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Resume outputs and history
+offline_resume_builder/resumes/
+offline_resume_builder/temp/
+offline_resume_builder/history/

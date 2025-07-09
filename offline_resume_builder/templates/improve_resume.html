@@ -1,0 +1,49 @@
+{% extends "layout.html" %} {% block title %}Improve Resume (AI){% endblock %}
+{% block content %}
+
+<h2>✨ Improve Your Resume (AI-Powered)</h2>
+
+<form method="post" id="improveForm">
+  <label for="resume_text">Paste Your Resume:</label><br />
+  <textarea
+    name="resume_text"
+    rows="12"
+    cols="80"
+    placeholder="Paste your resume text here..."
+  ></textarea
+  ><br /><br />
+
+  <label for="job_description">Job Description (optional):</label><br />
+  <textarea
+    name="job_description"
+    rows="6"
+    cols="80"
+    placeholder="Paste a job description to tailor the feedback (optional)"
+  ></textarea
+  ><br /><br />
+
+  <button type="submit" id="aiImproveBtn">Get AI Suggestions</button>
+</form>
+
+{% if suggestion %}
+<h3>💡 Suggestions:</h3>
+<pre style="background: #f4f4f4; padding: 10px; white-space: pre-wrap">
+{{ suggestion }}</pre
+>
+{% endif %}
+
+<br />
+<a href="{{ url_for('home') }}" class="btn btn-secondary">🏠 Back to Home</a>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("improveForm");
+    const btn = document.getElementById("aiImproveBtn");
+
+    form.addEventListener("submit", () => {
+      btn.disabled = true;
+      btn.textContent = "⏳ Generating Suggestions...";
+    });
+  });
+</script>
+{% endblock %}

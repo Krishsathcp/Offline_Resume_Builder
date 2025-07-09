@@ -1,0 +1,34 @@
+<!-- templates/resume_template_formal.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ name }} - Resume</title>
+  </head>
+  <body>
+    <h1>{{ name }}</h1>
+    <p>{{ email }} | {{ phone }} | {{ address }}</p>
+    <h2>About Myself</h2>
+    <p>{{ summary }}</p>
+
+    <h2>Experience</h2>
+    <ul>
+      {% for e in experience %}
+      <li>{{ e.strip() }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Education</h2>
+    <ul>
+      {% for e in education %}
+      <li>{{ e.strip() }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Skills</h2>
+    <ul>
+      {% for s in skils %}
+      <li>{{ s.strip() }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

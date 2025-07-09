@@ -1,0 +1,20 @@
+{% extends "layout.html" %} {% block title %}AI Resume Scoring{% endblock %} {%
+block content %}
+<h2>📊 AI Resume Score</h2>
+<form method="post">
+  <label for="resume_text">Paste your resume text:</label><br />
+  <textarea name="resume_text" rows="15" cols="80">
+{{ request.form.resume_text }}</textarea
+  ><br /><br />
+  <button type="submit">🔍 Score My Resume</button>
+</form>
+
+{% if score %}
+<hr />
+<h3>Score: {{ score }}/100</h3>
+<pre>{{ feedback }}</pre>
+{% endif %}
+
+<br />
+<a href="{{ url_for('home') }}">🏠 Back to Home</a>
+{% endblock %}

@@ -1,0 +1,6 @@
+Flask
+pdfkit
+python-docx
+mammoth
+requests
+ollama
